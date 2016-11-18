@@ -33,6 +33,7 @@
 	<!--HTML5 BOILERPLATE-->
 
 	<!--CSS(s) PRINCIPAL(is)-->
+		<link href="https://fonts.googleapis.com/css?family=Russo+One" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<link rel="stylesheet" type="text/css" href="css/mobile.css">
 	<!--CSS(s) PRINCIPAL(is)-->
@@ -42,7 +43,8 @@
 		<script type="text/javascript" src="js/preloadJs.js"></script>
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<!--JQUERY E PRELOAD JS-->
-		<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="js/md5.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
 	<!--JS BIBLIOTECAS-->
 	<!--
 		BOOTSTRAP (apagar essa linha em caso de uso)
@@ -60,6 +62,42 @@
 	<!--JS BIBLIOTECAS-->
 </head>
 <body>
-	
+	<video id="marvel-intro"  autoplay>
+	 <source src="media/video/marvel-intro.mp4" type="video/mp4">
+	 <source src="media/video/marvel-intro.ogv" type="video/ogv">
+	Your browser does not support the video tag.
+	</video>
+	<div class="main">
+		<div class="container">
+			<div class="screens">
+				<!-- BEGIN OF THE FIRST SCREEN -->
+				<div class="screen">
+					<h1 class="title text-center">Marvel Archive</h1>
+					<div class="form-container">
+						<form>
+						  <div class="form-group">
+						    <label for="formGroupExampleInput">public_key</label>
+						    <input type="text" class="form-control" id="public_key" placeholder="Example input">
+						  </div>
+						  <div class="form-group">
+						    <label for="formGroupExampleInput2">private_key</label>
+						    <input type="text" class="form-control" id="private_key" placeholder="Another input">
+						  </div>
+							<button class="btn marvel-btn">
+								<span>Login</span>
+							</button>
+						</form>
+					</div>
+				</div>
+				<!-- END OF THE FIRST SCREEN -->
+				<div class="screen"></div>
+				<div class="screen"></div>
+			</div>
+
+			<div class="loader-container">
+				 <div class="loader"></div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

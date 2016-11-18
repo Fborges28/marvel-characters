@@ -1,0 +1,135 @@
+body{
+  background-color: #000;
+  background-image: url("../media/img/bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+video {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    transform: translateX(-50%) translateY(-50%);
+    background-size: cover;
+    transition: 1s opacity;
+}
+
+.loader-container{
+  display: none;
+  background-color: rgba(0,0,0,.8);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #f0141e; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    position: absolute;
+    left: 50%;
+    margin-left: -60px;
+    top: 50%;
+    margin-top: -60px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.main{
+  display: none;
+}
+
+.title{
+  margin-top: 20%;
+  text-shadow: 0px 0px 3px #666;
+}
+
+.title, .form-container, .marvel-btn{
+    font-family: 'Russo One', sans-serif;
+    color: #fff;
+}
+
+.form-container{
+  padding: 35px;
+  border: 1px solid #292929;
+  letter-spacing: 1px;
+  width: 35%;
+  margin: 0px auto;
+  background-color: rgba(0,0,0,.9)
+}
+
+.form-container .marvel-btn{
+  margin: 30px auto 0px auto;
+}
+
+.form-control{
+  border-radius: 0px;
+}
+
+.form-group{
+  margin-bottom: 15px;
+}
+
+.marvel-btn{
+    min-width: 120px !important;
+    border: 0;
+    cursor: pointer;
+    background: transparent;
+    padding: 0 7px;
+    position: relative;
+    margin: 10px 1px;
+    color: #FFF !important;
+    text-transform: uppercase;
+    line-height: 47px;
+    vertical-align: middle;
+    font-size: 15px;
+    display: block;
+    overflow: visible;
+    outline: 0;
+}
+
+.marvel-btn span {
+    display: block;
+    padding: 0 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.marvel-btn::before, .marvel-btn::after {
+    position: absolute;
+    top: 0;
+    content: "";
+    width: 11px;
+    height: 47px;
+    -webkit-transform: skew(-11deg,0);
+    -ms-transform: skew(-11deg,0);
+    transform: skew(-11deg,0);
+}
+
+.marvel-btn span, .marvel-btn::before, .marvel-btn::after {
+    background-color: #f0141e;
+}
+
+.marvel-btn::before {
+    left: 3px;
+}
+
+.marvel-btn::after {
+    right: 3px;
+}
