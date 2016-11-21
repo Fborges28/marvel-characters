@@ -1,5 +1,5 @@
 body{
-  background-color: #000;
+  background-color: #DDD;
   background-image: url("../media/img/bg.jpg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -21,6 +21,10 @@ video {
     transition: 1s opacity;
 }
 
+img{
+  max-width: 100%;
+}
+
 table{
   background-color: rgba(234, 231, 231, 0.92);
 }
@@ -34,6 +38,44 @@ table tr td:nth-child(2),
 table tr td:nth-child(3){
   color: rgb(117, 109, 109);
 }
+
+.no-padding-right{
+  padding-right: 0px;
+}
+
+.no-padding-left{
+  padding-left: 0px;
+}
+
+/* Paginação */
+.bottom-nav{}
+.bottom-nav .btn-primary{
+  width: 100%;
+  border-radius: 0px;
+  padding: 10px;
+  border: none;
+}
+
+.bottom-nav .pagination{
+  width: 100%;
+  margin: 0px;
+}
+
+.bottom-nav .pagination > li {
+    display: block;
+    width: 16.66666666666667%;
+    float: left;
+}
+
+.bottom-nav .pagination > li > a,
+.bottom-nav .pagination > li > span{
+  border: none;
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+  border-radius: 0px;
+}
+/* Paginação */
 
 .screens .screen{
   display: none;
@@ -82,7 +124,11 @@ table tr td:nth-child(3){
   text-shadow: 0px 0px 3px #666;
 }
 
-.title, .form-container, .marvel-btn{
+.title,
+.form-container,
+.marvel-btn,
+#character-description h2,
+#character-description h3{
     font-family: 'Russo One', sans-serif;
     color: #fff;
 }
@@ -162,6 +208,38 @@ table tr td:nth-child(3){
 .marvel-btn::after {
     right: 3px;
 }
+
+/* THIRD SCREEN */
+.top-section, .character-hq-list{
+  background-color: rgba(255,255,255,.3);
+  padding: 35px;
+}
+
+.character-hq-list{
+  margin-top: 15px;
+}
+
+.character-hq-list ul{
+  padding: 0px;
+  margin: 0px;
+  list-style: none;
+}
+
+.image-holder img{
+  max-height: 350px;
+}
+
+.no-padding{
+  padding: 0px;
+}
+
+.margin-title h2,
+.margin-title h3{
+  margin: 0px 0px 10px 0px;
+}
+
+
+/* THIRD SCREEN */
 
 /* BOOTSTRAP OVERRIDES */
 .pagination > .disabled.active > a,

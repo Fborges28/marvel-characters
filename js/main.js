@@ -1,8 +1,8 @@
-/*var public_key = "6ad52bf8fa6844cce1a7ddd7d7a1e045";
-var private_key = "123613f675699c06d706aef3a2a2b3df9e58bcc0";*/
 var jsonURL, jsonContent;
 var characters = [];
+var comics = [];
 var offset = 0;
+var actualPage = 0;
 
 $(document).ready(function(){
   /*mediaEnd("marvel-intro", function(){
@@ -14,50 +14,76 @@ $(document).ready(function(){
   //tableContent(15, "list-of-characters")
 });
 
-function apiData(privateKey, publicKey, offset){
-  var d = new Date();
-  var completeTime = [d.getDate(), d.getMonth() + 1, d.getFullYear(), d.getHours()];
-  var timeStamp = completeTime.join("");
-  var hashFormed = md5(timeStamp + privateKey + publicKey);
+function pagination() {
+  $(".pagination li a").click(function(){
+    templatePagination($(this));
+    actualPage = parseInt($(this).html()) - 1;
+  });
 
-  var baseURL = "https://gateway.marvel.com:443/v1/public/characters?limit=10&offset="+offset+"&apikey=";
-  var result = baseURL + publicKey + "&ts="+ timeStamp + "&hash="+ hashFormed;
+  $(".back-to-list").click(function(){
+    toggleScreens("#character-description", "#characters-table")
+  })
+}
+
+function pagesControl(){
+
+}
+
+
+
+function displayCharacterInfo(){
+  $("#list-of-characters td").click(function(){
+    $(this).parent().siblings().removeClass("success");
+    $(this).parent().addClass("success");
+    var identifier = $(this).attr("data-identifier");
+    var index = $(this).parent().index();
+    console.log(index)
+
+    getXHR("https://gateway.marvel.com:443/v1/public/characters/"+identifier+"/comics?limit=10&offset=", function(){
+      if(jsonContent["data"]["results"].length > 0){
+        comics[index] = {
+          "characterName": characters[actualPage]["data"]["results"][index]["name"],
+          "listOfComics": jsonContent["data"]["results"]
+        };
+
+        if(jsonContent["data"]["results"][index]["images"].length > 0){
+          $(".character-hq-list .image-holder img").show();
+          $(".character-hq-list .image-holder img").attr("src", jsonContent["data"]["results"][index]["images"][0]["path"]+"."+jsonContent["data"]["results"][index]["images"][0]["extension"]);
+        }else{
+          $(".character-hq-list .image-holder").addClass("text-center");
+          $(".character-hq-list .image-holder img").hide();
+        }
+        toggleScreens("#characters-table", "#character-description");
+      }else{
+        console.log("Sem informações disponíveis");
+      }
+    })
+  })
+}
+
+function numberOfPages(){
+  var result = Math.ceil(jsonContent["data"]["total"] / 10);
   return result;
 }
 
-function getXHR(callback){
-  var publicKey = $("#public_key").val();
-  var privateKey = $("#private_key").val();
-  jsonURL = apiData(privateKey, publicKey, offset);
-  $.get(jsonURL, function(data, status){
-      jsonContent = data;
-      callback();
-      //tableContent(10, "list-of-characters");
+function templatePagination(element){
+  $(element).parent().siblings().removeClass("active disabled");
+  $(element).parent().addClass("active disabled");
+  var limit = parseInt($(element).html());
+  offset = (limit * 10) - 10;
+  //Se o json não foi baixado
+  if(characters[limit-1] === undefined){
+    console.log("Using server data");
+    getXHR("https://gateway.marvel.com:443/v1/public/characters?limit=10&offset=", function(){
+      characters[limit-1] = jsonContent;
+      updateCellsContent(10, "list-of-characters", jsonContent);
       offset += 10;
-  }).fail(function() {
-    console.log( "error" );
-  });
-}
-
-function pagination() {
-  $(".pagination li a").click(function(){
-    $(this).parent().siblings().removeClass("active disabled");
-    $(this).parent().addClass("active disabled");
-    var limit = parseInt($(this).html());
-    offset = (limit * 10) - 10;
-    //Se o json não foi baixado
-    if(characters[limit-1] === undefined){
-      console.log("Using server data");
-      getXHR(function(){
-        characters[limit-1] = jsonContent;
-        updateCellsContent(10, "list-of-characters", jsonContent);
-      });
-    }else{
-      //Se o json já foi baixado
-      console.log("Using local data");
-      updateCellsContent(10, "list-of-characters", characters[limit-1]);
-    }
-  })
+    });
+  }else{
+    //Se o json já foi baixado
+    console.log("Using local data");
+    updateCellsContent(10, "list-of-characters", characters[limit-1]);
+  }
 }
 
 function updateCellsContent(numberOfRows, id, json){
@@ -65,6 +91,9 @@ function updateCellsContent(numberOfRows, id, json){
     var cellNumber = 0;
     while(cellNumber < 3){
       var cell = document.getElementById(id).tBodies[0].childNodes[i+3].children[cellNumber];
+      cell.setAttribute("data-identifier", json["data"]["results"][i]["id"]);
+      var numberOfCell = parseInt($(cell).attr("data-number-list")) + 10;
+      cell.setAttribute("data-number-list", numberOfCell);
       cellsContent(json, cell, cellNumber, i);
       cellNumber++;
     }
@@ -74,8 +103,9 @@ function updateCellsContent(numberOfRows, id, json){
 function ajaxRequests(){
   $(".marvel-btn").click(function(e){
     e.preventDefault();
-    getXHR(function(){
+    getXHR("https://gateway.marvel.com:443/v1/public/characters?limit=10&offset=", function(){
       tableContent(10, "list-of-characters");
+      offset += 10;
     });
     afterLogin("#login", "#characters-table");
   });
@@ -98,6 +128,8 @@ function tableContent(numberOfRows, id){
       var cellNumber = 0;
       while(cellNumber < 3){
           var cell = document.createElement("TD");
+          cell.setAttribute("data-identifier", jsonContent["data"]["results"][i]["id"]);
+          cell.setAttribute("data-number-list", i);
           cellsContent(jsonContent, cell, cellNumber, i);
           listOfRows[i].appendChild(cell);
           cellNumber++;
@@ -110,32 +142,6 @@ function tableContent(numberOfRows, id){
     }
   }
 }
-
-function mediaEnd(element, callback){
-  var media = document.getElementById(element);
-  media.onended = function() {
-      callback();
-  };
-}
-
-function toggleScreens(elementA, elementB){
-  hideElement(elementA);
-  showElement(elementB);
-}
-
-function hideElement(element){
-  $(element).fadeOut();
-}
-
-function showElement(element){
-  $(element).delay(1000).fadeIn();
-}
-
-function afterLogin(actualScreen, toScreen){
-  $(".loader-container").fadeOut();
-  toggleScreens(actualScreen, toScreen);
-}
-
 //Adiciona os conteúdos nas células
 function cellsContent(json, cell, cellNumber, index){
     switch (cellNumber) {

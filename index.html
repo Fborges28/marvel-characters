@@ -44,6 +44,8 @@
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<!--JQUERY E PRELOAD JS-->
 	<script type="text/javascript" src="js/md5.js"></script>
+	<script type="text/javascript" src="js/ajax-calls.js"></script>
+	<script type="text/javascript" src="js/screen-controller.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
 	<!--JS BIBLIOTECAS-->
 	<!--
@@ -107,10 +109,10 @@
 					</div>
 					<nav class="bottom-nav">
 						<div class="row">
-							<div class="col col-xs-2 col-sm-2 col-md-2 col-lg-2">
+							<div class="col col-xs-2 col-sm-2 col-md-2 col-lg-2 no-padding-right">
 								<button class="btn btn-primary">Prev</button>
 							</div>
-							<div class="col col-xs-8 col-sm-8 col-md-8 col-lg-8">
+							<div class="col col-xs-8 col-sm-8 col-md-8 col-lg-8 no-padding">
 								<ul class="pagination">
 								<!-- <li class="disabled"><a href="#">1</a></li>-->
 								 <li><a href="#">1</a></li>
@@ -121,7 +123,7 @@
 								 <li><a href="#">6</a></li>
 								</ul>
 							</div>
-							<div class="col col-xs-2 col-sm-2 col-md-2 col-lg-2">
+							<div class="col col-xs-2 col-sm-2 col-md-2 col-lg-2 no-padding-left">
 								<button class="btn btn-primary">Next</button>
 							</div>
 						</div>
@@ -129,7 +131,43 @@
 					</nav>
 				</div>
 				<!-- END OF THE SECOND SCREEN -->
-				<div class="screen"></div>
+				<div class="screen" id="character-description">
+					<div class="row top-section character-info">
+						<div class="col col-xs-12 col-sm-12 col-md-2 col-lg-2 text-center image-holder">
+							<img src="media/img/spider-man.png" />
+						</div>
+						<div class="col col-xs-12 col-sm-12 col-md-8 col-lg-8 no-padding margin-title">
+							<h2>Nome</h2>
+							<p class="description">Descrição<p>
+						</div>
+						<div class="col col-xs-12 col-sm-12 col-md-2 col-lg-2">
+							<button class="btn btn-primary back-to-list">Voltar</button>
+						</div>
+					</div>
+					<h2 class="text-center">Fascículos</h2>
+					<div class="row character-hq-list">
+						<ul>
+							<li>
+								<div class="col col-xs-12 col-sm-12 col-md-4 col-lg-4 image-holder">
+									<img src="#" />
+								</div>
+								<div class="col col-xs-12 col-sm-12 col-md-8 col-lg-8">
+									<div class="row">
+										<div class="col col-xs-6 col-sm-6 col-md-6 col-lg-6 no-padding margin-title">
+											<h3>Título:</h3>
+										</div>
+										<div class="col col-xs-6 col-sm-6 col-md-6 col-lg-6 no-padding margin-title">
+											<h3>Número de capa:</h3>
+										</div>
+									</div>
+									<div class="row">
+										<p class="description">Descrição<p>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 
 			<div class="loader-container">
