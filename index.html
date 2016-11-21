@@ -62,16 +62,16 @@
 	<!--JS BIBLIOTECAS-->
 </head>
 <body>
-	<video id="marvel-intro"  autoplay>
+	<!--<video id="marvel-intro"  autoplay>
 	 <source src="media/video/marvel-intro.mp4" type="video/mp4">
 	 <source src="media/video/marvel-intro.ogv" type="video/ogv">
 	Your browser does not support the video tag.
-	</video>
+  </video>-->
 	<div class="main">
 		<div class="container">
 			<div class="screens">
 				<!-- BEGIN OF THE FIRST SCREEN -->
-				<div class="screen">
+				<div class="screen" id="login">
 					<h1 class="title text-center">Marvel Archive</h1>
 					<div class="form-container">
 						<form>
@@ -90,7 +90,45 @@
 					</div>
 				</div>
 				<!-- END OF THE FIRST SCREEN -->
-				<div class="screen"></div>
+				<div class="screen" id="characters-table">
+					<div class="table-responsive main-table-container">
+						<table class="table table-striped" id="list-of-characters">
+					    <thead>
+					      <tr>
+					        <th>Nome</th>
+					        <th>Descrição</th>
+					        <th>Última atualização</th>
+					      </tr>
+					    </thead>
+					    <tbody>
+								<!-- O CONTEÚDO DESTA TABELA SERÁ DINÂMICO (main.js - tableContent()) -->
+					    </tbody>
+					  </table>
+					</div>
+					<nav class="bottom-nav">
+						<div class="row">
+							<div class="col col-xs-2 col-sm-2 col-md-2 col-lg-2">
+								<button class="btn btn-primary">Prev</button>
+							</div>
+							<div class="col col-xs-8 col-sm-8 col-md-8 col-lg-8">
+								<ul class="pagination">
+								<!-- <li class="disabled"><a href="#">1</a></li>-->
+								 <li><a href="#">1</a></li>
+								 <li><a href="#">2</a></li>
+								 <li><a href="#">3</a></li>
+								 <li><a href="#">4</a></li>
+								 <li><a href="#">5</a></li>
+								 <li><a href="#">6</a></li>
+								</ul>
+							</div>
+							<div class="col col-xs-2 col-sm-2 col-md-2 col-lg-2">
+								<button class="btn btn-primary">Next</button>
+							</div>
+						</div>
+
+					</nav>
+				</div>
+				<!-- END OF THE SECOND SCREEN -->
 				<div class="screen"></div>
 			</div>
 
@@ -99,5 +137,7 @@
 			</div>
 		</div>
 	</div>
+
+
 </body>
 </html>

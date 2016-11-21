@@ -3,6 +3,8 @@ body{
   background-image: url("../media/img/bg.jpg");
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
 }
 
 video {
@@ -17,6 +19,29 @@ video {
     transform: translateX(-50%) translateY(-50%);
     background-size: cover;
     transition: 1s opacity;
+}
+
+table{
+  background-color: rgba(234, 231, 231, 0.92);
+}
+
+table tr td:first-child{
+  font-weight: bold;
+  color: rgb(102, 102, 102);
+}
+
+table tr td:nth-child(2),
+table tr td:nth-child(3){
+  color: rgb(117, 109, 109);
+}
+
+.screens .screen{
+  display: none;
+}
+
+/* FIRST SCREEN */
+.screens .screen:nth-child(1){
+  display: block;
 }
 
 .loader-container{
@@ -48,9 +73,9 @@ video {
     100% { transform: rotate(360deg); }
 }
 
-.main{
+/*.main{
   display: none;
-}
+}*/
 
 .title{
   margin-top: 20%;
@@ -81,6 +106,10 @@ video {
 
 .form-group{
   margin-bottom: 15px;
+}
+
+.main-table-container{
+  margin-top: 18%;
 }
 
 .marvel-btn{
@@ -133,3 +162,12 @@ video {
 .marvel-btn::after {
     right: 3px;
 }
+
+/* BOOTSTRAP OVERRIDES */
+.pagination > .disabled.active > a,
+.pagination > .disabled.active > a:focus,
+.pagination > .disabled.active > a:hover{
+  background-color: #FF1824;
+  color: #fff;
+}
+/* BOOTSTRAP OVERRIDES */
