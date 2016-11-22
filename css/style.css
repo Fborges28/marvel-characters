@@ -225,6 +225,16 @@ table tr td:nth-child(3){
   list-style: none;
 }
 
+.character-hq-list > ul > li{
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #ddd;
+}
+
+.character-hq-list ul li:last-child{
+  border: none;
+}
+
 .image-holder img{
   max-height: 350px;
 }
@@ -238,6 +248,15 @@ table tr td:nth-child(3){
   margin: 0px 0px 10px 0px;
 }
 
+{
+  margin-top: 35px;
+}
+
+.margin-title .hq-title,
+.margin-title .cover-number{
+  text-align: center;
+}
+
 
 /* THIRD SCREEN */
 
@@ -249,3 +268,16 @@ table tr td:nth-child(3){
   color: #fff;
 }
 /* BOOTSTRAP OVERRIDES */
+
+
+
+@media only screen and (min-width: 992px){
+  .margin-title .hq-title{
+      margin-top: 0px;
+  }
+
+  .margin-title .hq-title,
+  .margin-title .cover-number{
+    text-align: left;
+  }
+}

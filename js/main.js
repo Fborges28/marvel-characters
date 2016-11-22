@@ -1,4 +1,4 @@
-var jsonURL, jsonContent;
+var jsonURL, jsonContent, publicKey, privateKey;
 var characters = [];
 var comics = [];
 var offset = 0;
@@ -11,11 +11,11 @@ $(document).ready(function(){
   })*/
   ajaxRequests();
   pagination();
-  //tableContent(15, "list-of-characters")
 });
 
 function pagination() {
   $(".pagination li a").click(function(){
+    $(".loader-container").fadeIn();
     templatePagination($(this));
     actualPage = parseInt($(this).html()) - 1;
   });
@@ -32,31 +32,76 @@ function pagesControl(){
 
 
 function displayCharacterInfo(){
+  /* CONTAINER TO APPEND THE INFO FROM THE JSON COMICS */
+  var $itemContainer = $(".character-hq-list > ul > li");
+
   $("#list-of-characters td").click(function(){
+    //FEEDBACK TO THE CLICKED ROW
     $(this).parent().siblings().removeClass("success");
     $(this).parent().addClass("success");
+
+    //CLEAR THE LIST OF COMICS
+    $(".character-hq-list ul").html("");
+
+    //GET THE UNIQUE ID TO PASS TO THE URL FOR THE FUNCTION getXHR
     var identifier = $(this).attr("data-identifier");
     var index = $(this).parent().index();
-    console.log(index)
-
-    getXHR("https://gateway.marvel.com:443/v1/public/characters/"+identifier+"/comics?limit=10&offset=", function(){
+    console.log(index);
+    jsonURL = apiData("https://gateway.marvel.com:443/v1/public/characters/"+identifier+"/comics", privateKey, publicKey, 0, true, 100);
+    getXHR(jsonURL, function(){
       if(jsonContent["data"]["results"].length > 0){
         comics[index] = {
+          /* LIST OF JSONS (COMICS) TO LOCAL USAGE*/
           "characterName": characters[actualPage]["data"]["results"][index]["name"],
+          "characterThumb": characters[actualPage]["data"]["results"][index]["thumbnail"],
           "listOfComics": jsonContent["data"]["results"]
         };
+        /* LIST OF JSONS (COMICS) TO LOCAL USAGE*/
+        $(".character-name").html(comics[index]["characterName"]);
+        $(".character-info .image-holder img").attr("src", comics[index]["characterThumb"]["path"] + "." + comics[index]["characterThumb"]["extension"]);
 
-        if(jsonContent["data"]["results"][index]["images"].length > 0){
-          $(".character-hq-list .image-holder img").show();
-          $(".character-hq-list .image-holder img").attr("src", jsonContent["data"]["results"][index]["images"][0]["path"]+"."+jsonContent["data"]["results"][index]["images"][0]["extension"]);
-        }else{
-          $(".character-hq-list .image-holder").addClass("text-center");
-          $(".character-hq-list .image-holder img").hide();
+        for(var i = 0; i < jsonContent["data"]["results"].length; i++){
+          if(jsonContent["data"]["results"][index] === null){
+            break;
+          }else{
+            var containerTemp = $itemContainer.clone();
+            $(".character-hq-list ul").append(containerTemp);
+
+            /*TO IMAGES*/
+            if(jsonContent["data"]["results"][index]["thumbnail"] !== undefined){
+              $(".character-hq-list > ul > li:eq("+i+") > .image-holder img").show();
+              $(".character-hq-list  > ul > li:eq("+i+") > .image-holder img").attr("src", jsonContent["data"]["results"][i]["thumbnail"]["path"]+"."+jsonContent["data"]["results"][i]["thumbnail"]["extension"]);
+            }else{
+              $(".character-hq-list  > ul > li:eq("+i+") > .image-holder").addClass("text-center");
+              //$(".character-hq-list li:eq("+i+") .image-holder img").hide();
+            }
+            /*TO IMAGES*/
+
+            /*TO TITLES*/
+            if(jsonContent["data"]["results"][index]["title"] !== undefined || jsonContent["data"]["results"][index]["title"] != "" || jsonContent["data"]["results"][index]["title"] !== null){
+              $(".character-hq-list > ul > li:eq("+i+") > .hq-title").html(jsonContent["data"]["results"][i]["title"]);
+            }
+            /*TO TITLES*/
+
+            /*TO DESCRIPTION*/
+            if(jsonContent["data"]["results"][index]["description"] !== null){
+              var content = jsonContent["data"]["results"][i]["description"];
+              console.log(content)
+              $(".character-hq-list > ul > li:eq("+i+") .description").html(i);
+            }else{
+              $(".character-hq-list > ul > li:eq("+i+") .description").html("Sem descrição");
+            }
+            /*TO DESCRIPTION*/
+          }
+
         }
+        /*CHANGE SCREEN*/
         toggleScreens("#characters-table", "#character-description");
       }else{
+        /*NO INFO IN THE JSON*/
         console.log("Sem informações disponíveis");
       }
+
     })
   })
 }
@@ -74,7 +119,8 @@ function templatePagination(element){
   //Se o json não foi baixado
   if(characters[limit-1] === undefined){
     console.log("Using server data");
-    getXHR("https://gateway.marvel.com:443/v1/public/characters?limit=10&offset=", function(){
+    jsonURL = apiData("https://gateway.marvel.com:443/v1/public/characters", privateKey, publicKey, offset, true, 10);
+    getXHR(jsonURL, function(){
       characters[limit-1] = jsonContent;
       updateCellsContent(10, "list-of-characters", jsonContent);
       offset += 10;
@@ -82,6 +128,7 @@ function templatePagination(element){
   }else{
     //Se o json já foi baixado
     console.log("Using local data");
+    $(".loader-container").hide();
     updateCellsContent(10, "list-of-characters", characters[limit-1]);
   }
 }
@@ -92,8 +139,6 @@ function updateCellsContent(numberOfRows, id, json){
     while(cellNumber < 3){
       var cell = document.getElementById(id).tBodies[0].childNodes[i+3].children[cellNumber];
       cell.setAttribute("data-identifier", json["data"]["results"][i]["id"]);
-      var numberOfCell = parseInt($(cell).attr("data-number-list")) + 10;
-      cell.setAttribute("data-number-list", numberOfCell);
       cellsContent(json, cell, cellNumber, i);
       cellNumber++;
     }
@@ -103,9 +148,18 @@ function updateCellsContent(numberOfRows, id, json){
 function ajaxRequests(){
   $(".marvel-btn").click(function(e){
     e.preventDefault();
-    getXHR("https://gateway.marvel.com:443/v1/public/characters?limit=10&offset=", function(){
+    publicKey = $("#public_key").val();
+    privateKey = $("#private_key").val();
+
+    jsonURL = apiData("https://gateway.marvel.com:443/v1/public/characters", privateKey, publicKey, offset, true, 10);
+    getXHR(jsonURL, function(){
       tableContent(10, "list-of-characters");
+      displayCharacterInfo();
       offset += 10;
+      setTimeout(function(){
+        $(".pagination li:eq(0) a").trigger("click");
+        $(".loader-container").fadeOut();
+      }, 1000)
     });
     afterLogin("#login", "#characters-table");
   });
@@ -129,7 +183,6 @@ function tableContent(numberOfRows, id){
       while(cellNumber < 3){
           var cell = document.createElement("TD");
           cell.setAttribute("data-identifier", jsonContent["data"]["results"][i]["id"]);
-          cell.setAttribute("data-number-list", i);
           cellsContent(jsonContent, cell, cellNumber, i);
           listOfRows[i].appendChild(cell);
           cellNumber++;
