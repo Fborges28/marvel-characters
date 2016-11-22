@@ -5,17 +5,19 @@ var offset = 0;
 var actualPage = 0;
 
 $(document).ready(function(){
-  /*mediaEnd("marvel-intro", function(){
+  mediaEnd("marvel-intro", function(){
     hideElement("#marvel-intro");
     showElement(".main");
-  })*/
+  })
   ajaxRequests();
   pagination();
+  window.onbeforeunload = function() { return "You work will be lost."; };
 });
 
 function pagination() {
   $(".pagination li a").click(function(){
     $(".loader-container").fadeIn();
+    $("tr.success").removeClass("success")
     templatePagination($(this));
     actualPage = parseInt($(this).html()) - 1;
   });
@@ -37,6 +39,8 @@ function displayCharacterInfo(){
 
   $("#list-of-characters td").click(function(){
     //FEEDBACK TO THE CLICKED ROW
+    $(".loader-container").fadeIn();
+
     $(this).parent().siblings().removeClass("success");
     $(this).parent().addClass("success");
 
@@ -79,7 +83,7 @@ function displayCharacterInfo(){
 
             /*TO TITLES*/
             if(jsonContent["data"]["results"][index]["title"] !== undefined || jsonContent["data"]["results"][index]["title"] != "" || jsonContent["data"]["results"][index]["title"] !== null){
-              $(".character-hq-list > ul > li:eq("+i+") > .hq-title").html(jsonContent["data"]["results"][i]["title"]);
+              $(".character-hq-list > ul > li:eq("+i+") .hq-title").html(jsonContent["data"]["results"][i]["title"]);
             }
             /*TO TITLES*/
 
@@ -87,7 +91,7 @@ function displayCharacterInfo(){
             if(jsonContent["data"]["results"][index]["description"] !== null){
               var content = jsonContent["data"]["results"][i]["description"];
               console.log(content)
-              $(".character-hq-list > ul > li:eq("+i+") .description").html(i);
+              $(".character-hq-list > ul > li:eq("+i+") .description").html(content);
             }else{
               $(".character-hq-list > ul > li:eq("+i+") .description").html("Sem descrição");
             }
@@ -156,6 +160,7 @@ function ajaxRequests(){
       tableContent(10, "list-of-characters");
       displayCharacterInfo();
       offset += 10;
+      //$("body").removeClass("login-bg");
       setTimeout(function(){
         $(".pagination li:eq(0) a").trigger("click");
         $(".loader-container").fadeOut();

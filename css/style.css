@@ -1,10 +1,15 @@
 body{
-  background-color: #DDD;
-  background-image: url("../media/img/bg.jpg");
+  background-color: #0F0F0F;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
   background-attachment: fixed;
+}
+
+.login-bg{
+  background-image: url("../media/img/bg.jpg");
+  background-image: url("../media/img/bg1.jpg");
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%,rgba(0,0,0,0.95) 100%), url("../media/img/bg1.jpg");
 }
 
 video {
@@ -27,6 +32,10 @@ img{
 
 table{
   background-color: rgba(234, 231, 231, 0.92);
+}
+
+table tr{
+  cursor: pointer;
 }
 
 table tr td:first-child{
@@ -115,9 +124,9 @@ table tr td:nth-child(3){
     100% { transform: rotate(360deg); }
 }
 
-/*.main{
+.main{
   display: none;
-}*/
+}
 
 .title{
   margin-top: 20%;
@@ -137,9 +146,10 @@ table tr td:nth-child(3){
   padding: 35px;
   border: 1px solid #292929;
   letter-spacing: 1px;
+  min-width: 320px;
   width: 35%;
-  margin: 0px auto;
-  background-color: rgba(0,0,0,.9)
+  margin: 35px auto;
+  background-color: rgba(0,0,0,.9);
 }
 
 .form-container .marvel-btn{
@@ -209,9 +219,13 @@ table tr td:nth-child(3){
     right: 3px;
 }
 
+.character-info .character-name-container{
+  text-align: center;
+  padding: 35px 0px;
+}
+
 /* THIRD SCREEN */
 .top-section, .character-hq-list{
-  background-color: rgba(255,255,255,.3);
   padding: 35px;
 }
 
@@ -228,11 +242,16 @@ table tr td:nth-child(3){
 .character-hq-list > ul > li{
   margin-bottom: 30px;
   padding-bottom: 30px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #272727;
 }
 
 .character-hq-list ul li:last-child{
   border: none;
+}
+
+.character-hq-list .image-holder{
+  text-align: center;
+  margin: 35px 0px;
 }
 
 .image-holder img{
@@ -259,8 +278,19 @@ table tr td:nth-child(3){
 
 
 /* THIRD SCREEN */
+.back-to-list{
+  border: none;
+  border-radius: 0px;
+  width: 100%;
+  text-transform: uppercase;
+}
+
+.description{
+  color: #666;
+}
 
 /* BOOTSTRAP OVERRIDES */
+.back-to-list,
 .pagination > .disabled.active > a,
 .pagination > .disabled.active > a:focus,
 .pagination > .disabled.active > a:hover{
@@ -274,6 +304,16 @@ table tr td:nth-child(3){
 @media only screen and (min-width: 992px){
   .margin-title .hq-title{
       margin-top: 0px;
+  }
+
+  .character-info .character-name-container{
+    text-align: left;
+    padding: 0px;
+  }
+
+  .character-hq-list .image-holder{
+    text-align: left;
+    margin: 0px;
   }
 
   .margin-title .hq-title,
