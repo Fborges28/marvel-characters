@@ -5,10 +5,10 @@ var offset = 0;
 var actualPage = 0;
 
 $(document).ready(function(){
-  mediaEnd("marvel-intro", function(){
+  /*mediaEnd("marvel-intro", function(){
     hideElement("#marvel-intro");
     showElement(".main");
-  })
+  })*/
   ajaxRequests();
   pagination();
   window.onbeforeunload = function() { return "You work will be lost."; };
@@ -24,11 +24,36 @@ function pagination() {
 
   $(".back-to-list").click(function(){
     toggleScreens("#character-description", "#characters-table")
-  })
+  });
+
+  pagesControl();
 }
 
 function pagesControl(){
+  var firstPage = parseInt($(".pagination li:first-child a").html());
+  var lastPage = parseInt($(".pagination li:last-child a").html());
+  $(".prev").click(function(){
+    if(actualPage > 0){
+      actualPage--;
+      updateOnPageChange($(".pagination li:eq("+actualPage+") a"));
+      $(".next").removeClass("disabled");
+      if((actualPage + 1) == firstPage){
+        $(this).addClass("disabled");
+      }
+    }
+  });
 
+  $(".next").click(function(){
+    if(actualPage < lastPage - 1){
+      actualPage++;
+      console.log(actualPage)
+      updateOnPageChange($(".pagination li:eq("+actualPage+") a"));
+      $(".prev").removeClass("disabled");
+      if(actualPage == lastPage - 1){
+        $(this).addClass("disabled");
+      }
+    }
+  });
 }
 
 
@@ -57,7 +82,9 @@ function displayCharacterInfo(){
         comics[index] = {
           /* LIST OF JSONS (COMICS) TO LOCAL USAGE*/
           "characterName": characters[actualPage]["data"]["results"][index]["name"],
+          "characterTitle": characters[actualPage]["data"]["results"][index]["title"],
           "characterThumb": characters[actualPage]["data"]["results"][index]["thumbnail"],
+          "characterDescription": characters[actualPage]["data"]["results"][index]["description"],
           "listOfComics": jsonContent["data"]["results"]
         };
         /* LIST OF JSONS (COMICS) TO LOCAL USAGE*/
@@ -65,16 +92,16 @@ function displayCharacterInfo(){
         $(".character-info .image-holder img").attr("src", comics[index]["characterThumb"]["path"] + "." + comics[index]["characterThumb"]["extension"]);
 
         for(var i = 0; i < jsonContent["data"]["results"].length; i++){
-          if(jsonContent["data"]["results"][index] === null){
+          if(characters[actualPage]["data"]["results"][index] === null){
             break;
           }else{
             var containerTemp = $itemContainer.clone();
-            $(".character-hq-list ul").append(containerTemp);
-
+            $(".character-hq-list > ul").append(containerTemp);
+            //console.log(comics[index]["listOfComics"][i]["thumbnail"])
             /*TO IMAGES*/
-            if(jsonContent["data"]["results"][index]["thumbnail"] !== undefined){
+            if(comics[index]["listOfComics"][i]["thumbnail"] !== undefined){
               $(".character-hq-list > ul > li:eq("+i+") > .image-holder img").show();
-              $(".character-hq-list  > ul > li:eq("+i+") > .image-holder img").attr("src", jsonContent["data"]["results"][i]["thumbnail"]["path"]+"."+jsonContent["data"]["results"][i]["thumbnail"]["extension"]);
+              $(".character-hq-list  > ul > li:eq("+i+") > .image-holder img").attr("src", comics[index]["listOfComics"][i]["thumbnail"]["path"]+"."+comics[index]["listOfComics"][i]["thumbnail"]["extension"]);
             }else{
               $(".character-hq-list  > ul > li:eq("+i+") > .image-holder").addClass("text-center");
               //$(".character-hq-list li:eq("+i+") .image-holder img").hide();
@@ -82,20 +109,30 @@ function displayCharacterInfo(){
             /*TO IMAGES*/
 
             /*TO TITLES*/
-            if(jsonContent["data"]["results"][index]["title"] !== undefined || jsonContent["data"]["results"][index]["title"] != "" || jsonContent["data"]["results"][index]["title"] !== null){
-              $(".character-hq-list > ul > li:eq("+i+") .hq-title").html(jsonContent["data"]["results"][i]["title"]);
+            if(comics[index]["listOfComics"][i]["title"] !== undefined || comics[index]["listOfComics"][i]["title"] != "" || comics[index]["listOfComics"][i]["title"] !== null){
+              $(".character-hq-list > ul > li:eq("+i+") .hq-title").html(comics[index]["listOfComics"][i]["title"]);
             }
             /*TO TITLES*/
 
-            /*TO DESCRIPTION*/
-            if(jsonContent["data"]["results"][index]["description"] !== null){
-              var content = jsonContent["data"]["results"][i]["description"];
-              console.log(content)
+            /*TO DESCRIPTION OF CHARACTER*/
+            if(characters[actualPage]["data"]["results"][index]["description"] !== ""){
+              var content = characters[actualPage]["data"]["results"][index]["description"];
+              $(".character-description").html(content);
+            }else{
+              $(".character-description").html("Sem descrição");//Se for exibir algum feedback
+              //$(".character-description").hide();
+            }
+            /*TO DESCRIPTION OF CHARACTER*/
+
+            /*TO DESCRIPTION OF COMICS*/
+            if(comics[index]["listOfComics"][i]["description"] !== null){
+              var content = comics[index]["listOfComics"][i]["description"];
               $(".character-hq-list > ul > li:eq("+i+") .description").html(content);
             }else{
-              $(".character-hq-list > ul > li:eq("+i+") .description").html("Sem descrição");
+              $(".character-hq-list > ul > li:eq("+i+") .description").html("Sem descrição");//Se for exibir algum feedback
+              //$(".character-hq-list > ul > li:eq("+i+") .description").hide();
             }
-            /*TO DESCRIPTION*/
+            /*TO DESCRIPTION OF COMICS*/
           }
 
         }
@@ -104,8 +141,10 @@ function displayCharacterInfo(){
       }else{
         /*NO INFO IN THE JSON*/
         console.log("Sem informações disponíveis");
+        var title = $("#list-of-characters tbody tr:eq("+index+") td:first-child").html();
+        $(".modal-title").html(title);
+        $('#modal-feedback').delay(2000).modal('show');
       }
-
     })
   })
 }
@@ -116,10 +155,16 @@ function numberOfPages(){
 }
 
 function templatePagination(element){
+  updateOnPageChange(element);
+}
+
+function updateOnPageChange(element){
   $(element).parent().siblings().removeClass("active disabled");
   $(element).parent().addClass("active disabled");
+  $(".loader-container").fadeIn();
   var limit = parseInt($(element).html());
   offset = (limit * 10) - 10;
+  actualPage = limit - 1;
   //Se o json não foi baixado
   if(characters[limit-1] === undefined){
     console.log("Using server data");
@@ -132,7 +177,6 @@ function templatePagination(element){
   }else{
     //Se o json já foi baixado
     console.log("Using local data");
-    $(".loader-container").hide();
     updateCellsContent(10, "list-of-characters", characters[limit-1]);
   }
 }
@@ -147,6 +191,7 @@ function updateCellsContent(numberOfRows, id, json){
       cellNumber++;
     }
   }
+  $(".loader-container").fadeOut();
 }
 
 function ajaxRequests(){

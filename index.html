@@ -64,11 +64,13 @@
 	<!--JS BIBLIOTECAS-->
 </head>
 <body class="login-bg">
+	<!--
 	<video id="marvel-intro"  autoplay>
 	 <source src="media/video/marvel-intro.mp4" type="video/mp4">
 	 <source src="media/video/marvel-intro.ogv" type="video/ogv">
 	Your browser does not support the video tag.
   </video>
+	-->
 	<div class="main">
 		<div class="container">
 			<div class="screens">
@@ -110,7 +112,7 @@
 					<nav class="bottom-nav">
 						<div class="row">
 							<div class="col col-xs-2 col-sm-2 col-md-2 col-lg-2 no-padding-right">
-								<button class="btn btn-primary">Ant.</button>
+								<button class="btn btn-primary prev">Ant.</button>
 							</div>
 							<div class="col col-xs-8 col-sm-8 col-md-8 col-lg-8 no-padding">
 								<ul class="pagination">
@@ -124,7 +126,7 @@
 								</ul>
 							</div>
 							<div class="col col-xs-2 col-sm-2 col-md-2 col-lg-2 no-padding-left">
-								<button class="btn btn-primary">Próx.</button>
+								<button class="btn btn-primary next">Próx.</button>
 							</div>
 						</div>
 
@@ -183,6 +185,26 @@
 			<div class="loader-container">
 				 <div class="loader"></div>
 			</div>
+
+			<!-- Modal FEEDBACK -->
+			<div id="modal-feedback" class="modal fade" role="dialog">
+			  <div class="modal-dialog">
+			    <!-- Modal content-->
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal">&times;</button>
+			        <h4 class="modal-title text-center"></h4>
+			      </div>
+			      <div class="modal-body">
+			        <p>Nenhuma informação encontrada</p>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			<!-- Modal FEEDBACK -->
 		</div>
 	</div>
 
