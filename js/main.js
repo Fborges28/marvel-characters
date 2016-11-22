@@ -114,6 +114,13 @@ function displayCharacterInfo(){
             }
             /*TO TITLES*/
 
+            /*TO COVERNUMBER*/
+            if(comics[index]["listOfComics"][i]["issueNumber"] !== undefined || comics[index]["listOfComics"][i]["issueNumber"] != "" || comics[index]["listOfComics"][i]["issueNumber"] !== null){
+              $(".character-hq-list > ul > li:eq("+i+") .cover-number").html("#"+comics[index]["listOfComics"][i]["issueNumber"]);
+              console.log(comics[index]["listOfComics"][i]["diamondCode"])
+            }
+            /*TO COVERNUMBER*/
+
             /*TO DESCRIPTION OF CHARACTER*/
             if(characters[actualPage]["data"]["results"][index]["description"] !== ""){
               var content = characters[actualPage]["data"]["results"][index]["description"];
@@ -129,6 +136,7 @@ function displayCharacterInfo(){
               var content = comics[index]["listOfComics"][i]["description"];
               $(".character-hq-list > ul > li:eq("+i+") .description").html(content);
             }else{
+              $(".character-hq-list > ul > li:eq("+i+") .description").addClass("text-center");//Se for exibir algum feedback
               $(".character-hq-list > ul > li:eq("+i+") .description").html("Sem descrição");//Se for exibir algum feedback
               //$(".character-hq-list > ul > li:eq("+i+") .description").hide();
             }

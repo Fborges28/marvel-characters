@@ -300,7 +300,6 @@ table tr td:nth-child(3){
   padding-left: 20px;
   list-style-type: disc;
 }
-
 /* BOOTSTRAP OVERRIDES */
 .back-to-list,
 .pagination > .disabled.active > a,
@@ -319,7 +318,7 @@ table tr td:nth-child(3){
   padding: 25px 15px
 }
 /* BOOTSTRAP OVERRIDES */
-@media only screen and (min-width: 992px){
+@media only screen and (min-width: 768px){
   .modal-dialog{
     margin: 100px auto;
   }
@@ -327,6 +326,10 @@ table tr td:nth-child(3){
 
 
 @media only screen and (min-width: 992px){
+  .cover-number{
+    padding-left: 0px;
+  }
+
   .margin-title .hq-title{
       margin-top: 0px;
   }
