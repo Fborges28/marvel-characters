@@ -5,10 +5,10 @@ var offset = 0;
 var actualPage = 0;
 
 $(document).ready(function(){
-  /*mediaEnd("marvel-intro", function(){
+  mediaEnd("marvel-intro", function(){
     hideElement("#marvel-intro");
     showElement(".main");
-  })*/
+  })
   ajaxRequests();
   pagination();
   window.onbeforeunload = function() { return "You work will be lost."; };
